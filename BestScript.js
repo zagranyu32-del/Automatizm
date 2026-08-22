@@ -3,13 +3,10 @@
   // ==========================================
   const HOTKEYS_MAP = {
     // Двухшаговые кнопки (Массив: ['Категория', 'Подкатегория'])
-    '1': ['Abusing', 'Severe Abuse'],  // Нажмет Abusing -> затем Severe Abuse
-    '2': ['Abusing', 'Mild Abuse'],    // Нажмет Abusing -> затем Mild Abuse
-    
-    // Одиночные кнопки (Обычная строка)
-    '3': 'Noise&Cacaphony',
+    '.': ['Abusing/Threatening', 'Severe Abuse(C)'],  // Нажмет Abusing -> затем Severe Abuse
+    '3': ['Abusing/Threatening', 'Mild Abuse(D)'],    // Нажмет Abusing -> затем Mild Abuse
     '4': 'Ignore',
-    '5': 'Other Language'
+    '1': 'Other Language(E)'
   };
 
   // Мгновенный клик (с поддержкой цепочек категорий и подкатегорий)
