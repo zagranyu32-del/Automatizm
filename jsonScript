@@ -12,7 +12,8 @@ document.addEventListener('keydown', async function(e) {
   }
 });
 const scripts = {
-  qa: 'BestScript.js'
+  qa: 'BestScript.js',
+  test: 'testing.js'
 };
 
 if (scripts[value]) {
