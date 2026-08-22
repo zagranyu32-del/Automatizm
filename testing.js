@@ -1,50 +1,46 @@
 (function () {
   'use strict';
 
-  // Сопоставление клавиш и текста на кнопках
-  const HOTKEYS_MAP = {
-    '1': 'Reyting',
-    '2': "Do'kon",
-    '3': 'Skinlar'
+  // Карта клавиш и прямых путей (и текстов) для cs2.uz
+  const NAVIGATION_MAP = {
+    '1': { text: 'Reyting', path: '/leaderboard' },
+    '2': { text: "Do'kon", path: '/store' },
+    '3': { text: 'Skinlar', path: '/skins' }
   };
 
-  // Эмуляция естественного человеческого клика
-  function triggerHumanClick(element) {
-    if (!element) return;
-
-    const mouseOptions = { bubbles: true, cancelable: true, view: window };
-
-    element.dispatchEvent(new MouseEvent('pointerdown', mouseOptions));
-    element.dispatchEvent(new MouseEvent('mousedown', mouseOptions));
-    element.dispatchEvent(new MouseEvent('pointerup', mouseOptions));
-    element.dispatchEvent(new MouseEvent('mouseup', mouseOptions));
-    element.dispatchEvent(new MouseEvent('click', mouseOptions));
-
-    element.click(); // Резервный вызов
-  }
-
-  // Поиск кнопки по части текста и клик
-  function clickButtonByText(targetText) {
-    const elements = document.querySelectorAll('button, .btn, .ant-btn, a, [role="button"], div, span');
+  function navigateTo(target) {
+    // 1. Ищем ссылку <a> в меню по её тексту
+    const links = document.querySelectorAll('a');
     
-    for (const el of elements) {
-      const text = (el.textContent || el.innerText || '').trim().toLowerCase();
-      
-      // includes позволяет находить кнопки, даже если в них есть лишние пробелы или спецсимволы
-      if (text.includes(targetText.toLowerCase())) {
-        triggerHumanClick(el);
-        console.log(`%c[TestingScript] Нажата кнопка: "${el.textContent.trim()}"`, 'color: #00ff00; font-weight: bold;');
+    for (const link of links) {
+      const text = (link.textContent || link.innerText || '').trim().toLowerCase();
+      const cleanTargetText = target.text.replace(/['`’]/g, '').toLowerCase();
+      const cleanLinkText = text.replace(/['`’]/g, '');
+
+      if (cleanLinkText.includes(cleanTargetText)) {
+        console.log(`%c[Testing] Найдена ссылка: "${text}". Переходим...`, 'color: #00ff00; font-weight: bold;');
+        
+        // Кликаем по ссылке
+        link.click();
+        
+        // Резервный переход, если клик не сработал из-за SPA-роутера
+        if (link.href) {
+          setTimeout(() => {
+            window.location.href = link.href;
+          }, 100);
+        }
         return true;
       }
     }
-    
-    console.warn(`[TestingScript] Кнопка с текстом "${targetText}" не найдена на странице.`);
-    return false;
+
+    // 2. Если по тексту не нашли, переходим прямо по URL-адресу
+    console.warn(`[Testing] Ссылка с текстом "${target.text}" не найдена. Переход по прямому пути: ${target.path}`);
+    window.location.href = window.location.origin + target.path;
   }
 
-  // Слушатель нажатий клавиатуры
+  // Слушатель клавиш 1, 2, 3
   document.addEventListener('keydown', (event) => {
-    // Не срабатывает, если вы печатаете текст в поле ввода
+    // Не срабатывает, если вы печатаете в поиске или чате
     const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
     if (activeTag === 'input' || activeTag === 'textarea' || document.activeElement.isContentEditable) {
       return;
@@ -52,13 +48,13 @@
 
     const key = event.key;
 
-    if (HOTKEYS_MAP[key]) {
-      const buttonText = HOTKEYS_MAP[key];
-      console.log(`[TestingScript] Нажата [${key}] -> Нажимаем "${buttonText}"`);
-      clickButtonByText(buttonText);
+    if (NAVIGATION_MAP[key]) {
+      const target = NAVIGATION_MAP[key];
+      console.log(`[Testing] Нажата клавиша [${key}] -> Навигация в "${target.text}"`);
+      navigateTo(target);
     }
   });
 
-  console.log('%c[TestingScript] Успешно запущен!', 'color: #ffff00; font-weight: bold;');
-  console.log('[TestingScript] Назначения: 1 = Reyting, 2 = Do\'kon, 3 = Skinlar');
+  console.log('%c[TestingScript] Запущен для cs2.uz!', 'color: #ffff00; font-weight: bold;');
+  console.log('[TestingScript] Нажмите: 1 = Reyting, 2 = Do\'kon, 3 = Skinlar');
 })();
