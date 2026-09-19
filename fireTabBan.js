@@ -19,7 +19,8 @@ document.addEventListener('keydown', (e) => {
 if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
 
 switch (e.key) {
-case '.':
+case 'M':
+case 'm':
     e.preventDefault();
     clickByText('button span', 'Pornography')
     setTimeout(() => {
@@ -27,7 +28,8 @@ case '.':
     }, 300)
 break;
 
-case '0':
+case 'C':
+case 'c':
     e.preventDefault();
     clickByText('button span', 'Abusing/Threatening');
     setTimeout(() => {
@@ -35,21 +37,33 @@ case '0':
     }, 300);
 break;
 
-case '1':
+case 'z':
+case 'Z':
 e.preventDefault();
 clickByText('button span', 'ignore')
 break;
 
-case '2':
+case 'X':
+case 'x':
 e.preventDefault();
 clickByText('button span', 'Other Language(E)')
 break;0
 
-case '3':
+case 'b':
+case 'B':
 e.preventDefault();
 clickByText('button span', 'Pornography')
 setTimeout(() =>{
     clickByText('button span', 'Sexual Chat (B)')
+},300);
+break;
+
+case 'V':
+case 'v':
+e.preventDefault();
+clickByText('button span', 'Abusing/Threatening')
+setTimeout(() =>{
+    clickByText('button span', 'Mild Abuse(D)')
 },300);
 break;
 
