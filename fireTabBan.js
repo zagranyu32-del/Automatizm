@@ -16,6 +16,13 @@
 (function () {
 'use strict';
 
+function playPauseAudio() {
+const playBtn = document.querySelector(
+'.custom-audio-wrap .anticon-caret-right, .custom-audio-wrap .anticon-pause'
+);
+if (playBtn) playBtn.closest('a')?.click();
+}
+
 function clickByText(tag, text) {
 const elements = [...document.querySelectorAll(tag)];
 const el = elements.find(e => e.innerText.trim() === text);
